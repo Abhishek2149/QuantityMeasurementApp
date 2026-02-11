@@ -86,6 +86,22 @@ public class Length {
         return new Length(round(convertedValue), this.unit);
     }
 
+    //UC7 - Method to add two Lengths and return the result in a specified target unit
+    public Length add(Length thatLength, LengthUnit targetUnit)
+    {
+        if(thatLength == null)
+        {
+            throw new IllegalArgumentException("Cannot add null Length");
+        }
+        if(targetUnit == null)
+        {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+        double valueInBaseUnit = this.convertToBaseUnit() + thatLength.convertToBaseUnit();
+        double convertedValue = valueInBaseUnit / targetUnit.getConversionFactor();
+        return new Length(round(convertedValue), targetUnit);
+    }
+
 
 
     //overriding equals method
@@ -123,7 +139,7 @@ public class Length {
     }
 
     //standalone testing
-    // public static void main(String[] args) {
+    public static void main(String[] args) {
     //     Length l1 = new Length(12.0, LengthUnit.INCHES);
     //     Length l2 = new Length(1.0, LengthUnit.FEET);
     //     System.out.println("Are lengths equal? " + l1.compare(l2));
@@ -153,6 +169,13 @@ public class Length {
     // Length l12 = new Length(12, LengthUnit.INCHES);
     // Length sumLength = l11.add(l12);
     // System.out.println("Sum of " + l11 + " and " + l12 + " is: " + sumLength);
+
+
+    //UC 7
+    Length l13 = new Length(1, LengthUnit.FEET);
+    Length l14 = new Length(30.48, LengthUnit.CENTIMETERS);
+    Length sumLengthInInches = l13.add(l14, LengthUnit.INCHES);
+    System.out.println("Sum of " + l13 + " and " + l14 + " is: " + sumLengthInInches);
         
-    // }
+    }
 }   

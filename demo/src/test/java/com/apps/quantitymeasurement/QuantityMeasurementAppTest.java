@@ -509,4 +509,132 @@ public class QuantityMeasurementAppTest {
         Length expectedSum = new Length(0.002, LengthUnit.FEET); // 0.001 feet + 0.012 inches ≈ 0.002 feet
         assertTrue(length1.add(length2).equals(expectedSum));
     }
+
+    // UC7 - Test Cases for Addition with Target Unit
+    @Test
+    public void testAdditionWithTargetUnit_FeetPlusInches_ToInches() {
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(12.0, LengthUnit.INCHES);
+        Length expectedSum = new Length(24.0, LengthUnit.INCHES); // 1 foot + 12 inches = 24 inches
+        assertTrue(length1.add(length2, LengthUnit.INCHES).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_FeetPlusInches_ToFeet() {
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(12.0, LengthUnit.INCHES);
+        Length expectedSum = new Length(2.0, LengthUnit.FEET); // 1 foot + 12 inches = 2 feet
+        assertTrue(length1.add(length2, LengthUnit.FEET).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_FeetPlusCentimeters_ToInches() {
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(30.48, LengthUnit.CENTIMETERS);
+        Length expectedSum = new Length(24.0, LengthUnit.INCHES); // 1 foot + 30.48 cm = 24 inches
+        assertTrue(length1.add(length2, LengthUnit.INCHES).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_YardsPlusFeet_ToYards() {
+        Length length1 = new Length(1.0, LengthUnit.YARDS);
+        Length length2 = new Length(3.0, LengthUnit.FEET);
+        Length expectedSum = new Length(2.0, LengthUnit.YARDS); // 1 yard + 3 feet = 2 yards
+        assertTrue(length1.add(length2, LengthUnit.YARDS).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_YardsPlusFeet_ToFeet() {
+        Length length1 = new Length(1.0, LengthUnit.YARDS);
+        Length length2 = new Length(3.0, LengthUnit.FEET);
+        Length expectedSum = new Length(6.0, LengthUnit.FEET); // 1 yard + 3 feet = 6 feet
+        assertTrue(length1.add(length2, LengthUnit.FEET).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_InchesPlusCentimeters_ToCentimeters() {
+        Length length1 = new Length(1.0, LengthUnit.INCHES);
+        Length length2 = new Length(2.54, LengthUnit.CENTIMETERS);
+        Length expectedSum = new Length(5.08, LengthUnit.CENTIMETERS); // 1 inch + 2.54 cm = 5.08 cm
+        assertTrue(length1.add(length2, LengthUnit.CENTIMETERS).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_DifferentUnits_ToYards() {
+        Length length1 = new Length(12.0, LengthUnit.INCHES); // 12 inches = 1 foot
+        Length length2 = new Length(3.0, LengthUnit.FEET);
+        Length expectedSum = new Length(1.3333, LengthUnit.YARDS); // 12 inches + 3 feet = 4 feet = 1.3333 yards
+        assertTrue(length1.add(length2, LengthUnit.YARDS).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_ZeroValues() {
+        Length length1 = new Length(0.0, LengthUnit.FEET);
+        Length length2 = new Length(0.0, LengthUnit.INCHES);
+        Length expectedSum = new Length(0.0, LengthUnit.YARDS);
+        assertTrue(length1.add(length2, LengthUnit.YARDS).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_NegativeValues() {
+        Length length1 = new Length(5.0, LengthUnit.FEET);
+        Length length2 = new Length(-24.0, LengthUnit.INCHES);
+        Length expectedSum = new Length(36.0, LengthUnit.INCHES); // 5 feet - 24 inches = 3 feet = 36 inches
+        assertTrue(length1.add(length2, LengthUnit.INCHES).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_NullSecondOperand() {
+        Length length1 = new Length(5.0, LengthUnit.FEET);
+        try {
+            length1.add(null, LengthUnit.INCHES);
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("Cannot add null Length"));
+        }
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_NullTargetUnit() {
+        Length length1 = new Length(5.0, LengthUnit.FEET);
+        Length length2 = new Length(12.0, LengthUnit.INCHES);
+        try {
+            length1.add(length2, null);
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("Target unit cannot be null"));
+        }
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_Commutativity() {
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(12.0, LengthUnit.INCHES);
+        Length sum1 = length1.add(length2, LengthUnit.YARDS);
+        Length sum2 = length2.add(length1, LengthUnit.YARDS);
+        assertTrue(sum1.equals(sum2));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_SmallValues() {
+        Length length1 = new Length(0.001, LengthUnit.FEET);
+        Length length2 = new Length(0.012, LengthUnit.INCHES);
+        Length expectedSum = new Length(0.024, LengthUnit.INCHES); // 0.001 feet + 0.012 inches ≈ 0.024 inches
+        assertTrue(length1.add(length2, LengthUnit.INCHES).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_LargeValues() {
+        Length length1 = new Length(1e6, LengthUnit.FEET);
+        Length length2 = new Length(1e6, LengthUnit.FEET);
+        Length expectedSum = new Length(2e6, LengthUnit.FEET);
+        assertTrue(length1.add(length2, LengthUnit.FEET).equals(expectedSum));
+    }
+
+    @Test
+    public void testAdditionWithTargetUnit_PrecisionCheck() {
+        Length length1 = new Length(1.0, LengthUnit.FEET);
+        Length length2 = new Length(1.0, LengthUnit.INCHES);
+        Length expectedSum = new Length(13.0, LengthUnit.INCHES); // 1 foot + 1 inch = 13 inches
+        Length actualSum = length1.add(length2, LengthUnit.INCHES);
+        assertTrue(Math.abs(actualSum.getValue() - expectedSum.getValue()) < 0.01);
+    }
 }
