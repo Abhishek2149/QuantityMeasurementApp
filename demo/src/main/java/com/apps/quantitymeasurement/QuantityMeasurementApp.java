@@ -77,7 +77,7 @@ public class QuantityMeasurementApp {
         System.out.print("Enter length value: ");
         double value = scanner.nextDouble();
 
-        System.out.print("Enter length unit (INCHES, FEET): ");
+        System.out.print("Enter length unit (INCHES, FEET, YARDS, CENTIMETERS): ");
         String unitInput = scanner.next().toUpperCase();
         LengthUnit unit;
         try {
@@ -90,53 +90,22 @@ public class QuantityMeasurementApp {
 
     }
 
-    //Feet equality demonstration
-    public static void demonstrateFeetEquality(Scanner scanner) {
+    public static void demonstrateLengthComparison(Scanner scanner) {
         Length length1 = readLength(scanner);
         Length length2 = readLength(scanner);
 
         System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
                 ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
-       
-        
-
         System.out.println("\nOutput: Equal (" + demonstrateLengthEquality(length1, length2) + ")");
-    }
-
-    public static void demonstrateInchEquality(Scanner scanner) {
-        Length length1 = readLength(scanner);
-        Length length2 = readLength(scanner);
-
-        System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
-                ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
-       
-        
-
-        System.out.println("\nOutput: Equal (" + demonstrateLengthEquality(length1, length2) + ")");
-
-        
-    }
-
-    public static void demonstrateFeetinchesComparison(Scanner scanner) {
-        Length lengthInFeet = readLength(scanner);
-        Length lengthInInches = readLength(scanner);
-
-        System.out.println("Input: Quantity 1: " + lengthInFeet.getValue() + " " + lengthInFeet.getUnit().name().toLowerCase() +
-                ", Quantity 2: " + lengthInInches.getValue() + " " + lengthInInches.getUnit().name().toLowerCase());
-
-        System.out.println("\nOutput: Equal (" + demonstrateLengthEquality(lengthInFeet, lengthInInches) + ")");
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         try (scanner) {
-            System.out.println("Demonstrating Feet Equality (Enter values in feet):");
-            demonstrateFeetEquality(scanner);
+            //Demonstrate Length comparison
 
-            System.out.println("\nDemonstrating Inches Equality (Enter values in inches):");
-            demonstrateInchEquality(scanner);
-            System.out.println("\nDemonstrating Feet and Inches Comparison:");
-            demonstrateFeetinchesComparison(scanner);
+            System.out.println("\nDemonstrating Length Comparison:");
+            demonstrateLengthComparison(scanner);
         } finally {
             scanner.close();
         }
