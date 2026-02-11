@@ -43,10 +43,22 @@ public class Length {
         return this.value * this.unit.getConversionFactor();
     }
 
-    //round to 2 decimal places
+    //round to 4 decimal places
     private static double round (double value)
     {
-        return Math.round(value * 100.0) / 100.0;
+        return Math.round(value * 10000.0) / 10000.0;
+    }
+
+
+    //Equality comparison method
+
+    public boolean compare(Length thatLength)
+    {
+        if(thatLength == null)
+        {
+            throw new IllegalArgumentException("Cannot compare with null Length");
+        }
+        return Math.abs(this.convertToBaseUnit() - thatLength.convertToBaseUnit()) < EPSILON;
     }
 
     //Method to convert Length to another unit
@@ -62,16 +74,19 @@ public class Length {
     }
 
 
-    //Equality comparison method
-
-    public boolean compare(Length thatLength)
+    //Method to add two Lengths and return the result in a unit of first Length
+    public Length add(Length thatLength)
     {
         if(thatLength == null)
         {
-            throw new IllegalArgumentException("Cannot compare with null Length");
+            throw new IllegalArgumentException("Cannot add null Length");
         }
-        return Math.abs(this.convertToBaseUnit() - thatLength.convertToBaseUnit()) < EPSILON;
+        double valueInBaseUnit = this.convertToBaseUnit() + thatLength.convertToBaseUnit();
+        double convertedValue = valueInBaseUnit / this.unit.getConversionFactor();
+        return new Length(round(convertedValue), this.unit);
     }
+
+
 
     //overriding equals method
     @Override
@@ -132,6 +147,12 @@ public class Length {
     //     Length l10 = new Length(91.44, LengthUnit.CENTIMETERS);
     //     System.out.println("Are lengths equal? " + l9.compare(l10));
 
+
+    //UC 6
+    // Length l11 = new Length(1, LengthUnit.FEET);
+    // Length l12 = new Length(12, LengthUnit.INCHES);
+    // Length sumLength = l11.add(l12);
+    // System.out.println("Sum of " + l11 + " and " + l12 + " is: " + sumLength);
         
     // }
 }   
