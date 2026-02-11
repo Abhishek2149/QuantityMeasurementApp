@@ -75,10 +75,33 @@ public class QuantityMeasurementApp {
     public static Length demonstrateLengthAddition(Scanner scanner) {
         Length length1 = readLength(scanner);
         Length length2 = readLength(scanner);
+
         System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
                 ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
         return length1.add(length2);
     }
+
+    //Demonstrate addition of lengths with target unit
+    public static Length demonstrateLengthAdditionWithTargetUnit(Scanner scanner) {
+        Length length1 = readLength(scanner);
+        Length length2 = readLength(scanner);
+
+        System.out.print("Enter target length unit (INCHES, FEET, YARDS, CENTIMETERS): ");
+        String unitInput = scanner.next().toUpperCase();
+        LengthUnit unit;
+        try {
+            unit = LengthUnit.valueOf(unitInput);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid length unit");
+        }
+        LengthUnit targetUnit = unit; // Default target unit for addition result
+
+        System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
+                ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
+        return length1.add(length2, targetUnit);
+    }
+
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -98,6 +121,12 @@ public class QuantityMeasurementApp {
             System.out.println("\nDemonstrating Length Addition:");
             Length sumLength = demonstrateLengthAddition(scanner);
             System.out.println("Sum of lengths: " + sumLength.getValue() + " " + sumLength.getUnit().name().toLowerCase());
+
+            //UC 7 - Addition with target unit
+            System.out.println("\nDemonstrating Length Addition with Target Unit:");
+            Length sumLengthWithTargetUnit = demonstrateLengthAdditionWithTargetUnit(scanner);
+            System.out.println("Sum of lengths: " + sumLengthWithTargetUnit.getValue() + " " + sumLengthWithTargetUnit.getUnit().name().toLowerCase());
+
         } finally {
             scanner.close();
         }
