@@ -71,6 +71,15 @@ public class QuantityMeasurementApp {
         return tempLength.convertTo(toUnit);
     }
 
+    //Demonstrate addition of lengths
+    public static Length demonstrateLengthAddition(Scanner scanner) {
+        Length length1 = readLength(scanner);
+        Length length2 = readLength(scanner);
+        System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
+                ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
+        return length1.add(length2);
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         try (scanner) {
@@ -80,9 +89,15 @@ public class QuantityMeasurementApp {
             // demonstrateLengthComparison(scanner);
 
             //Demonstrate Length conversion
-            System.out.println("\nDemonstrating Length Conversion:");
-            Length convertedLength = demonstrateLengthConversion(scanner);
-            System.out.println("Converted Length: " + convertedLength.getValue() + " " + convertedLength.getUnit().name().toLowerCase());
+            // System.out.println("\nDemonstrating Length Conversion:");
+            // Length convertedLength = demonstrateLengthConversion(scanner);
+            // System.out.println("Converted Length: " + convertedLength.getValue() + " " + convertedLength.getUnit().name().toLowerCase());
+
+
+            //Demonstrate Length addition
+            System.out.println("\nDemonstrating Length Addition:");
+            Length sumLength = demonstrateLengthAddition(scanner);
+            System.out.println("Sum of lengths: " + sumLength.getValue() + " " + sumLength.getUnit().name().toLowerCase());
         } finally {
             scanner.close();
         }
