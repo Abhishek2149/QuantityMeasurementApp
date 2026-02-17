@@ -5,22 +5,7 @@ public class Length {
     private final LengthUnit unit;
     private static final double EPSILON = 0.0001;  // Tolerance for floating-point comparison
 
-    public enum LengthUnit {
-        FEET(12.0),
-        INCHES(1.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);  // 1 cm = 0.393701 inches
-
-        private final double conversionFactor;
-
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
-        }
-
-        public double getConversionFactor() {
-            return conversionFactor;
-        }
-    }
+   
 
     // Constructor
     public Length(double value, LengthUnit unit)
@@ -38,9 +23,9 @@ public class Length {
     }
 
     //convet to base unit inches
-    private double convertToBaseUnit()
+    double convertToBaseUnit()
     {
-        return this.value * this.unit.getConversionFactor();
+        return this.unit.convertToBaseUnit(this.value);
     }
 
     //round to 4 decimal places
@@ -99,6 +84,17 @@ public class Length {
         }
         double valueInBaseUnit = this.convertToBaseUnit() + thatLength.convertToBaseUnit();
         double convertedValue = valueInBaseUnit / targetUnit.getConversionFactor();
+        return new Length(round(convertedValue), targetUnit);
+    }
+
+    //Convert from base unit to target unit
+    public Length convertToTargetUnit(double lengthInInches,LengthUnit targetUnit)
+    {
+        if(targetUnit == null)
+        {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+        double convertedValue = lengthInInches / targetUnit.getConversionFactor();
         return new Length(round(convertedValue), targetUnit);
     }
 
@@ -172,10 +168,10 @@ public class Length {
 
 
     //UC 7
-    Length l13 = new Length(1, LengthUnit.FEET);
-    Length l14 = new Length(30.48, LengthUnit.CENTIMETERS);
-    Length sumLengthInInches = l13.add(l14, LengthUnit.INCHES);
-    System.out.println("Sum of " + l13 + " and " + l14 + " is: " + sumLengthInInches);
+    // Length l13 = new Length(1, LengthUnit.FEET);
+    // Length l14 = new Length(30.48, LengthUnit.CENTIMETERS);
+    // Length sumLengthInInches = l13.add(l14, LengthUnit.INCHES);
+    // System.out.println("Sum of " + l13 + " and " + l14 + " is: " + sumLengthInInches);
         
     }
 }   
