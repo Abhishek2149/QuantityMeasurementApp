@@ -2,7 +2,8 @@ package com.apps.quantitymeasurement;
 
 import java.util.Scanner;
 
-import com.apps.quantitymeasurement.Length.LengthUnit;
+// import com.apps.quantitymeasurement.LengthUnit;
+// import com.apps.quantitymeasurement.Length;
 
 /**
  * Hello world!
@@ -11,13 +12,7 @@ import com.apps.quantitymeasurement.Length.LengthUnit;
 public class QuantityMeasurementApp {
     // Inner class to represent Feet measurement
 
-    // Length equality demonstration
-    public static boolean demonstrateLengthEquality(Length length1, Length length2) {
-        return length1.equals(length2);
-    }
-
-
-    //Helper method to read Length from user input
+    // Helper method to read Length from user input
 
     private static Length readLength(Scanner scanner) {
         System.out.print("Enter length value: ");
@@ -36,16 +31,51 @@ public class QuantityMeasurementApp {
 
     }
 
+    // Length equality demonstration
+    public static void demonstrateLengthEquality(Scanner scanner) {
+        Length length1 = readLength(scanner);
+        Length length2 = readLength(scanner);
+        System.out.println("Input: Quantity(" + length1.getValue() + "," + length1.getUnit().name().toLowerCase() +
+                ").equals(Quantity(" + length2.getValue() + "," + length2.getUnit().name().toLowerCase() + "))");
+        System.out.println("Output: " + length1.equals(length2));
+    }
+
+
+    //Length Comparison demonstration
     public static void demonstrateLengthComparison(Scanner scanner) {
         Length length1 = readLength(scanner);
         Length length2 = readLength(scanner);
 
-        System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
-                ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
-        System.out.println("\nOutput: Equal (" + demonstrateLengthEquality(length1, length2) + ")");
+        System.out.println("Input: Quantity(" + length1.getValue() + "," + length1.getUnit().name().toLowerCase() +
+                ").equals(Quantity(" + length2.getValue() + "," + length2.getUnit().name().toLowerCase() + "))");
+        System.out.println("Output: " + length1.equals(length2));
     }
 
+    //Demonstrate length conversion form base unit to target unit
     public static Length demonstrateLengthConversion(Scanner scanner) {
+        System.out.print("Enter length value: ");
+        double value = scanner.nextDouble();
+
+        LengthUnit fromUnit = LengthUnit.INCHES; // Base unit for conversion
+
+        System.out.print("Enter target length unit (INCHES, FEET, YARDS, CENTIMETERS): ");
+        String toUnitInput = scanner.next().toUpperCase();
+        LengthUnit toUnit;
+        try {
+            toUnit = LengthUnit.valueOf(toUnitInput);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid length unit");
+        }
+
+        Length tempLength = new Length(value, fromUnit);
+        return tempLength.convertToTargetUnit(value,toUnit);
+    }
+
+
+
+
+    //demonstration Length Conversion to target unit
+    public static Length demonstrateLengthConversionToTargetUnit(Scanner scanner) {
         System.out.print("Enter length value: ");
         double value = scanner.nextDouble();
 
@@ -71,7 +101,7 @@ public class QuantityMeasurementApp {
         return tempLength.convertTo(toUnit);
     }
 
-    //Demonstrate addition of lengths
+    // Demonstrate addition of lengths with result in first length's unit
     public static Length demonstrateLengthAddition(Scanner scanner) {
         Length length1 = readLength(scanner);
         Length length2 = readLength(scanner);
@@ -81,54 +111,113 @@ public class QuantityMeasurementApp {
         return length1.add(length2);
     }
 
-    //Demonstrate addition of lengths with target unit
+    // Demonstrate addition of lengths with target unit
     public static Length demonstrateLengthAdditionWithTargetUnit(Scanner scanner) {
         Length length1 = readLength(scanner);
         Length length2 = readLength(scanner);
 
         System.out.print("Enter target length unit (INCHES, FEET, YARDS, CENTIMETERS): ");
         String unitInput = scanner.next().toUpperCase();
-        LengthUnit unit;
+        LengthUnit targetUnit;
         try {
-            unit = LengthUnit.valueOf(unitInput);
+            targetUnit = LengthUnit.valueOf(unitInput);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid length unit");
         }
-        LengthUnit targetUnit = unit; // Default target unit for addition result
 
         System.out.println("Input: Quantity 1: " + length1.getValue() + " " + length1.getUnit().name().toLowerCase() +
                 ", Quantity 2: " + length2.getValue() + " " + length2.getUnit().name().toLowerCase());
         return length1.add(length2, targetUnit);
     }
 
-
+    // Display menu
+    private static void displayMenu() {
+        System.out.println("\n========================================");
+        System.out.println("   QUANTITY MEASUREMENT APPLICATION");
+        System.out.println("========================================");
+        System.out.println("1. Check Length Equality");
+        System.out.println("2. Compare Lengths");
+        System.out.println("3. Convert Length from Base Unit to Target Unit");
+        System.out.println("4. Convert Length to Target Unit");
+        System.out.println("5. Add Two Lengths (Result in First Length's Unit)");
+        System.out.println("6. Add Two Lengths (Result in Custom Unit)");
+        System.out.println("7. Exit");
+        System.out.println("========================================");
+        System.out.print("Enter your choice (1-7): ");
+    }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        try (scanner) {
-            //Demonstrate Length comparison
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean running = true;
 
-            // System.out.println("\nDemonstrating Length Comparison:");
-            // demonstrateLengthComparison(scanner);
+            while (running) {
+                try {
+                    displayMenu();
+                    int choice = scanner.nextInt();
 
-            //Demonstrate Length conversion
-            // System.out.println("\nDemonstrating Length Conversion:");
-            // Length convertedLength = demonstrateLengthConversion(scanner);
-            // System.out.println("Converted Length: " + convertedLength.getValue() + " " + convertedLength.getUnit().name().toLowerCase());
+                    switch (choice) {
+                        case 1:
+                            // Check Length Equality
+                            System.out.println("\n--- Check Length Equality ---");
+                            demonstrateLengthComparison(scanner);
+                            break;
 
+                        case 2:
+                            // Compare Lengths
+                            System.out.println("\n--- Compare Lengths ---");
+                            demonstrateLengthComparison(scanner);
+                            break;
 
-            //Demonstrate Length addition
-            System.out.println("\nDemonstrating Length Addition:");
-            Length sumLength = demonstrateLengthAddition(scanner);
-            System.out.println("Sum of lengths: " + sumLength.getValue() + " " + sumLength.getUnit().name().toLowerCase());
+                        case 3:
+                            // Convert Length from Base Unit to Target Unit
+                            System.out.println("\n--- Convert from Base Unit (Inches) ---");
+                            Length convertedFromBase = demonstrateLengthConversion(scanner);
+                            System.out.println("Converted Length: " + convertedFromBase.getValue() + " "
+                                    + convertedFromBase.getUnit().name().toLowerCase());
+                            break;
 
-            //UC 7 - Addition with target unit
-            System.out.println("\nDemonstrating Length Addition with Target Unit:");
-            Length sumLengthWithTargetUnit = demonstrateLengthAdditionWithTargetUnit(scanner);
-            System.out.println("Sum of lengths: " + sumLengthWithTargetUnit.getValue() + " " + sumLengthWithTargetUnit.getUnit().name().toLowerCase());
+                        case 4:
+                            // Convert Length to Target Unit
+                            System.out.println("\n--- Convert Length to Target Unit ---");
+                            Length convertedLength = demonstrateLengthConversionToTargetUnit(scanner);
+                            System.out.println("Converted Length: " + convertedLength.getValue() + " "
+                                    + convertedLength.getUnit().name().toLowerCase());
+                            break;
 
-        } finally {
-            scanner.close();
+                        case 5:
+                            // Add Two Lengths (Result in First Length's Unit)
+                            System.out.println("\n--- Add Two Lengths ---");
+                            Length sumLength = demonstrateLengthAddition(scanner);
+                            System.out.println("Sum of lengths: " + sumLength.getValue() + " "
+                                    + sumLength.getUnit().name().toLowerCase());
+                            break;
+
+                        case 6:
+                            // Add Two Lengths with Target Unit
+                            System.out.println("\n--- Add Two Lengths (Custom Unit) ---");
+                            Length sumLengthWithTargetUnit = demonstrateLengthAdditionWithTargetUnit(scanner);
+                            System.out.println("Sum of lengths: " + sumLengthWithTargetUnit.getValue() + " "
+                                    + sumLengthWithTargetUnit.getUnit().name().toLowerCase());
+                            break;
+
+                        case 7:
+                            // Exit
+                            System.out.println("\nThank you for using Quantity Measurement Application!");
+                            running = false;
+                            break;
+
+                        default:
+                            System.out.println("\nInvalid choice! Please enter a number between 1 and 7.");
+                            break;
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.out.println("\nError: " + e.getMessage());
+                    scanner.nextLine(); // Clear invalid input
+                } catch (Exception e) {
+                    System.out.println("\nInvalid input! Please enter a valid number.");
+                    scanner.nextLine(); // Clear invalid input
+                }
+            }
         }
     }
 }
